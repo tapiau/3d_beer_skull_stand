@@ -1,62 +1,72 @@
-$fn=80;
+$fn=200;
 
 module torus(r1,r2)
 {
     rotate_extrude(convexity = 10, $fn = 100)
     translate([r1, 0, 0])
-        circle(r = r2, $fn = 100);
+        circle(r = r2, $fn = 200);
 }
 
 module skull()
 {
-    import("src/lowpolyskulllisa.stl");
+    import("inc/lowpolyskulllisa.stl");
+}
+
+module skulls(r)
+{
+	for(n=[0:60:359])
+   {
+   	rotate([0,0,n])    
+      translate([0,-r-20,0])
+      	rotate([0,0,0])
+         	scale([0.5,0.5,0.5])
+            	skull();
+   }
 }
 
 
-module base()
+module base(d)
 {
+	r=d/2;
+
     difference()
     {
         union()
         {
+				
+				// bottom
             translate([0,0,10])
-                torus(60,10);
+                torus(r+15,10);
 
-            cylinder(r=60,h=20);
-
-            for(n=[0:60:359])
-            {
-                rotate([0,0,n])    
-                translate([0,-63,0])
-                    rotate([0,0,0])
-                    scale([0.5,0.5,0.5])
-                        skull();
-            }
-
+            cylinder(r=r+15,h=20);
+ 
             translate([0,0,20])
             difference()
             {
-                cylinder(r=60,h=5);
+                cylinder(r=r+15,h=5);
                 translate([0,0,5])
-                    torus(60,5);
+                    torus(r+15,5);
             }
            
             translate([0,0,25])
-                cylinder(r=55,h=10);
+                cylinder(r=r+10,h=10);
             
             translate([0,0,35])
-                torus(50,5);
+                torus(r+5,5);
+
+				skulls(r);
         }
         
+			// inner
         translate([0,0,6])
         union()
         {
-            cylinder(r=45,h=80);
-            torus(42,3);
+            cylinder(r=r,h=80);
+            torus(r-3,3);
             translate([0,0,-3])
-                cylinder(r=42,h=6);
+                cylinder(r=r-3,h=6);
         }
     }
 }
 
-base();
+base(70);
