@@ -1,15 +1,15 @@
-$fn=200;
+$fn=180;
 
 module torus(r1,r2)
 {
-    rotate_extrude(convexity = 10, $fn = 100)
+    rotate_extrude(convexity = 10, $fn = 180)
     translate([r1, 0, 0])
-        circle(r = r2, $fn = 200);
+        circle(r = r2, $fn = 90);
 }
 
 module skull()
 {
-    import("inc/lowpolyskulllisa.stl");
+    import("inc/lowpolyskulllisa_fixed.stl");
 }
 
 module skulls(r)
