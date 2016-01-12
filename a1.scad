@@ -1,10 +1,10 @@
-$fn=180;
+$fn=90;
 
 module torus(r1,r2)
 {
-    rotate_extrude(convexity = 10, $fn = 180)
+    rotate_extrude(convexity = 10)
     translate([r1, 0, 0])
-        circle(r = r2, $fn = 90);
+        circle(r = r2);
 }
 
 module skull()
@@ -33,31 +33,37 @@ module base(d)
     {
         union()
         {
-				
-				// bottom
-            translate([0,0,10])
-                torus(r+15,10);
-
-            cylinder(r=r+15,h=20);
- 
-            translate([0,0,20])
+			h1=12;
+            h2=23;
+            d1=6;
+            d2=3;
+            
+			// bottom
+            translate([0,0,h1/2])
+                torus(r+h1/2*1.5+d2,h1/2);
+            cylinder(r=r+h1/2*1.5+d2,h=h1);
+        
+            // radial cut
+            translate([0,0,h1])
             difference()
             {
-                cylinder(r=r+15,h=5);
-                translate([0,0,5])
-                    torus(r+15,5);
+                cylinder(r=r+d1*1.5,h=d1/2);
+                translate([0,0,d1/2])
+                    torus(r+d1*1.5,d1/2);
             }
-           
-            translate([0,0,25])
-                cylinder(r=r+10,h=10);
+                       
+            // chimney
+            cylinder(r=r+d1,h=h2);
             
-            translate([0,0,35])
-                torus(r+5,5);
-
-				skulls(r);
+            translate([0,0,h2])
+            {
+                torus(r+d1/2,d1/2);
+            }
+            
+			skulls(r);
         }
         
-			// inner
+        // inner
         translate([0,0,6])
         union()
         {
